@@ -1730,7 +1730,7 @@ class IOCJson(IOCConfiguration):
             return self.get_full_config()
         else:
             conf, write = self.json_load()
-            state, _ = iocage_lib.ioc_list.IOCList().list_get_jid(
+            state, jid = iocage_lib.ioc_list.IOCList().list_get_jid(
                 conf['host_hostuuid'])
 
             if prop == "last_started" and conf[prop] == "none":
@@ -1738,7 +1738,7 @@ class IOCJson(IOCConfiguration):
             elif prop == 'devfs_ruleset' and state:
                 ruleset = su.check_output(
                     [
-                        'jls', '-j', f'ioc-{conf["host_hostuuid"]}',
+                        'jls', '-j', jid,
                         'devfs_ruleset'
                     ]
                 ).decode().rstrip()
